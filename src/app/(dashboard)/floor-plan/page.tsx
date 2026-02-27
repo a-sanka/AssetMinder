@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -207,7 +206,6 @@ function FloorPlanListContent() {
             <Link key={fp.id} href={`/floor-plan/${fp.id}`}>
               <Card className="hover:border-primary/50 transition-colors cursor-pointer overflow-hidden">
                 <div className="aspect-video bg-muted relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={fp.imageUrl}
                     alt={fp.name}

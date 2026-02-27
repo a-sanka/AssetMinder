@@ -5,9 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { QrCode, Printer, MapPin, Package } from "lucide-react";
@@ -39,7 +36,6 @@ function QrCodeCard({
   return (
     <Card className="text-center">
       <CardContent className="pt-6 space-y-2">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`/api/qr/generate?data=${encodeURIComponent(qrData)}&format=svg&size=180`}
           alt={`QR: ${label}`}

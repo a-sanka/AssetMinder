@@ -141,7 +141,6 @@ export default async function AssetDetailPage({
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`/api/qr/generate?data=${encodeURIComponent(asset.qrCodeData)}&format=svg&size=200`}
             alt={`QR code for ${asset.name}`}
