@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Facility {
+  id          String   @id @default(cuid())
+  name        String
+  address     String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  floorPlans FloorPlan[]
+  assets     Asset[]
+
+  @@map("facilities")
+}
+
+model FloorPlan {
+  id          String   @id @default(cuid())
+  name        String
+  imageUrl    String
+  imageWidth  Int
+  imageHeight Int
+  facilityId  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  facility        Facility         @relation(fields: [facilityId], references: [id], onDelete: Cascade)
+  locationMarkers LocationMarker[]
+  assetPlacements AssetPlacement[]
+
+  @@index([facilityId])
+  @@map("floor_plans")
+}
+
+model LocationMarker {
+  id          String   @id @default(cuid())
+  name        String
+  x           Float
+  y           Float
+  floorPlanId String
+  qrCodeData  String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  floorPlan FloorPlan @relation(fields: [floorPlanId], references: [id], onDelete: Cascade)
+
+  @@index([floorPlanId])
+  @@map("location_markers")
+}
+
+model Asset {
+  id           String   @id @default(cuid())
+  name         String
+  type         String
+  serialNumber String?
+  description  String?
+  imageUrl     String?
+  facilityId   String
+  qrCodeData   String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  facility   Facility         @relation(fields: [facilityId], references: [id], onDelete: Cascade)
+  placements AssetPlacement[]
+
+  @@index([facilityId])
+  @@index([serialNumber])
+  @@map("assets")
+}
+
+model AssetPlacement {
+  id          String   @id @default(cuid())
+  assetId     String   @unique
+  floorPlanId String
+  x           Float
+  y           Float
+  scannedAt   DateTime @default(now())
+  scannedBy   String?
+  notes       String?
+
+  asset     Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  floorPlan FloorPlan @relation(fields: [floorPlanId], references: [id], onDelete: Cascade)
+
+  @@index([floorPlanId])
+  @@index([scannedAt])
+  @@map("asset_placements")
+}
